@@ -98,7 +98,7 @@ int main(void) {
 #endif /* FSL_FEATURE_ADC16_HAS_DIFF_MODE */
 
     ADC16_SetChannelConfig(DEMO_ADC16_BASE, DEMO_ADC16_CHANNEL_GROUP, &adc16ChannelConfigStruct);
-
+    //hol
     red();
     PIT_delay(PIT_0, SYSTEM_CLOCK, DELAY_TIME);// EMPEZAMOS LA FREQ DE MUESTREO
 
