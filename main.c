@@ -87,10 +87,11 @@ edma_transfer_config_t g_transferConfig;
 const uint32_t g_Adc16_16bitFullRange = 65536U;
 
 int main(void) {
-	float *h;
+
 	float h_0 [h_n_lenght] = {1, 0, 0, 0, 0, 0, 0};	//Respuesta 1 para reproducri cacnión normal
 	float h_1 [h_n_lenght] = {-0.1050, -0.1448, -0.1721, 0.8182, -0.1721, -0.1448, -0.1050};//Respuesta h1
 	float h_2 [h_n_lenght] = {0.0802, 0.0860, 0.0897, 0.0909, 0.0897, 0.0860, 0.0802};//Respuesta h2
+	float *h=&h_0;
 	float x[x_n_lenght+3] = {0};
 	float *x1 = &x, *x2 = &x[7];
 	float y;
@@ -102,7 +103,7 @@ int main(void) {
 	GPIO_callback_init(GPIO_A, ptr_to_f,&volume);
 	ptr_to_f = volume_down;
 	GPIO_callback_init(GPIO_C, ptr_to_f,&volume);
-	PIT_delay(PIT_0, SYSTEM_CLOCK, DELAY_TIME);// EMPEZAMOS LA FREQ DE MUESTREO
+
 
     uint8_t ready_flag;
     dac_config_t dacConfigStruct;
@@ -122,7 +123,8 @@ int main(void) {
 #endif
     adcChnConfig.enableInterruptOnConversionCompleted = false;
     ADC16_SetChannelConfig(DEMO_ADC16_BASEADDR, DEMO_ADC16_CHANNEL_GROUP, &adcChnConfig);
-
+    red();
+    PIT_delay(PIT_0, SYSTEM_CLOCK, DELAY_TIME);// EMPEZAMOS LA FREQ DE MUESTREO
 
     while(1) {
     	if(GPIO_get_irq_status(GPIO_B))
@@ -234,6 +236,7 @@ void volume_down(int *volume)
 {
 	*volume -= vol_const;
 }
+
 void pointer_void_funct(float *x, float *h,float *y)
 {
     int i;
@@ -242,6 +245,5 @@ void pointer_void_funct(float *x, float *h,float *y)
     {
     	count = count + x[i]*h[i];
     }
-
-
+    *y = count;
 }
