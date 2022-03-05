@@ -158,12 +158,19 @@ void init()
 	BOARD_InitBootClocks();
 	//configurar entradas switches puerto b como
 	gpio_pin_control_register_t input_intr_config = GPIO_MUX1|GPIO_PE|GPIO_PS|INTR_FALLING_EDGE; // SW interrupt config
-	gpio_pin_control_register_t input_intr_config_dp_sw = GPIO_MUX1|GPIO_PE|GPIO_PS|INTR_EITHER_EDGE;//interrupcion sw puerto b
+	gpio_pin_control_register_t input_intr_config_dp_sw = GPIO_MUX1|GPIO_PS|INTR_EITHER_EDGE;//interrupcion sw puerto b
 
 	GPIO_clock_gating(GPIO_A);//VOLUMEN SW3
 	GPIO_clock_gating(GPIO_B);//SWITHCES
 	GPIO_clock_gating(GPIO_C);//VOLUMEN SW2
+	GPIO_clock_gating(GPIO_E);
 
+	gpio_pin_control_register_t pcr_gpioe_pin_led = GPIO_MUX1;
+	gpio_pin_control_register_t pcr_gpiob_pin_led = GPIO_MUX1;
+
+	GPIO_pin_control_register(GPIO_B,bit_21,&pcr_gpiob_pin_led);
+	GPIO_pin_control_register(GPIO_B,bit_22,&pcr_gpiob_pin_led);
+	GPIO_pin_control_register(GPIO_E,bit_26,&pcr_gpioe_pin_led);
 
 	GPIO_pin_control_register(GPIO_A,bit_4, &input_intr_config);
 	GPIO_pin_control_register(GPIO_C,bit_6, &input_intr_config);
@@ -177,7 +184,9 @@ void init()
 	GPIO_data_direction_pin(GPIO_B, GPIO_INPUT, bit_3);
 	GPIO_data_direction_pin(GPIO_B, GPIO_INPUT, bit_10);
 	//
-
+	GPIO_data_direction_pin(GPIO_B, GPIO_OUTPUT, bit_21);
+	GPIO_data_direction_pin(GPIO_B, GPIO_OUTPUT, bit_22);
+	GPIO_data_direction_pin(GPIO_E, GPIO_OUTPUT, bit_26);
 
 	//
 	PIT_clock_gating();
