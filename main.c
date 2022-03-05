@@ -66,7 +66,10 @@ int main(void) {
     dac_config_t dacConfigStruct;
     uint32_t dacValue;
 
-    DAC_init_config(&dacConfigStruct);
+    DAC_GetDefaultConfig(&dacConfigStruct);
+    DAC_Init(DAC0, &dacConfigStruct);
+    DAC_Enable(DAC0, true);             /* Enable output. */
+    DAC_SetBufferReadPointer(DAC0, 0U);
 
 
     adc16_config_t adc16ConfigStruct;
@@ -144,7 +147,7 @@ int main(void) {
     		conv = floor(y);
     		if(4094>conv) conv=4094;
     		//void DAC_write_value(dac_config_t *config, uint32_t value);
-    		DAC_write_value(&dacConfigStruct,conv);
+    		DAC_SetBufferValue(DAC0, 0U, conv);
     		PIT_clear_interrupt_flag();
     	}
     }
@@ -154,7 +157,7 @@ int main(void) {
 
 void init()
 {
-
+	BOARD_InitBootPins();
 	BOARD_InitBootClocks();
 	//configurar entradas switches puerto b como
 	gpio_pin_control_register_t input_intr_config = GPIO_MUX1|GPIO_PE|GPIO_PS|INTR_FALLING_EDGE; // SW interrupt config
