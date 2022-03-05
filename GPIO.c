@@ -47,8 +47,8 @@ void PORTB_IRQHandler(void)
 	{
 		gpio_B_callback();
 	}
-	g_intr_status_flag.flag_port_c = TRUE;
-	GPIO_clear_interrupt(GPIO_C);
+	g_intr_status_flag.flag_port_b = TRUE;
+	GPIO_clear_interrupt(GPIO_B);
 }
 
 void PORTA_IRQHandler(void)
