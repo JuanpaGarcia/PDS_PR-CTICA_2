@@ -12,6 +12,7 @@
 #include "board.h"
 #include "fsl_dac.h"
 #include <stdio.h>
+#include<math.h>
 
 #include "fsl_common.h"
 #include "fsl_device_registers.h"
@@ -161,7 +162,8 @@ int main(void) {
     		x[0]= g_avgADCValue + volume;	//no se si sea el sumar o que miltiplique
     		//void pointer_void_funct(float *x, float *h,float *y)
     		pointer_void_funct(x,h,&y);
-    		if(4094>y) conv=4094;
+    		conv = floor(y);
+    		if(4094>conv) conv=4094;
     		//void DAC_write_value(dac_config_t *config, uint32_t value);
     		DAC_write_value(&dacConfigStruct,conv);
     		PIT_clear_interrupt_flag();
